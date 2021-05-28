@@ -3,13 +3,12 @@ import "../styles/Main.css";
 import AddRecipeForm from "../components/AddRecipeForm";
 import Table from "../components/Table";
 
-
 function Main() {
   const [inputs, setInputs] = useState({
     chefName: "",
     recipe: "",
   });
-  let data = JSON.parse(localStorage.getItem("recipes"));
+  let data = JSON.parse(localStorage.getItem("recipes")) || [{}];
   if (data === undefined) {
     data = [];
   }
@@ -25,14 +24,7 @@ function Main() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (action === "Add") {
-      const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-      const recipe = recipes.find(
-        (item) => item.recipe.toLowerCase() === inputs.recipe.toLowerCase()
-      );
-      if (recipe) {
-        alert("Recipe already exists!");
-        return;
-      }
+      const recipes = JSON.parse(localStorage.getItem("recipes")) || [{}];
       const data = {
         chefName: inputs.chefName,
         recipe: inputs.recipe,
@@ -45,9 +37,9 @@ function Main() {
         recipe: "",
       });
     } else {
-      const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+      const recipes = JSON.parse(localStorage.getItem("recipes")) || [{}];
       const recipe = recipes.find(
-        (item) => item.recipe.toLowerCase() === itemEdit.recipe.toLowerCase()
+        (item) => item.recipe === itemEdit.recipe
       );
       let index = recipes.indexOf(recipe);
       recipes[index] = inputs;
@@ -60,10 +52,11 @@ function Main() {
       setAction("Add");
     }
   };
+
   const handleEdit = (recip) => {
-    const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+    const recipes = JSON.parse(localStorage.getItem("recipes")) || [{}];
     const recipe = recipes.find(
-      (item) => item.recipe.toLowerCase() === recip.recipe.toLowerCase()
+      (item) => item.recipe === recip.recipe
     );
     let index = recipes.indexOf(recipe);
     if (index !== -1) {
@@ -73,9 +66,9 @@ function Main() {
     }
   };
   const handleDelete = (recip) => {
-    const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+    const recipes = JSON.parse(localStorage.getItem("recipes")) || [{}];
     const recipe = recipes.find(
-      (item) => item.recipe.toLowerCase() === recip.recipe.toLowerCase()
+      (item) => item.recipe === recip.recipe
     );
     console.log(recipes.indexOf(recipe));
     let index = recipes.indexOf(recipe);
@@ -102,7 +95,6 @@ function Main() {
           deleteButton={handleDelete}
           editButton={handleEdit}
         />
-        
       </div>
     </div>
   );
