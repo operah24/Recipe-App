@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import "../styles/Main.css";
 import AddRecipeForm from "../components/AddRecipeForm";
 import Table from "../components/Table";
+import Button from "../components/Button";
 
-function Main() {
+function Main(props) {
   const [inputs, setInputs] = useState({
     chefName: "",
     recipe: "",
@@ -78,9 +79,17 @@ function Main() {
     localStorage.setItem("recipes", JSON.stringify(recipes));
     setTableData(recipes);
   };
+   const signOut=(e) =>{
+    //e.preventDefault();
+    localStorage.clear();
+    props.history.push('/')
+  }
+
   return (
     <div>
       <h2>Recipe's Lounge</h2>
+      <Button name="Logout" className="login-btn" onClick={signOut} />
+
       <div className="form-recipe">
         <AddRecipeForm
           chefName={inputs.chefName}
